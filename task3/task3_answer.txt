@@ -1,0 +1,89 @@
+====================
+ Task 3
+====================
+
+
+Evaluating the LLM as Player 1 (answerer):
+A set of objects should be selected in the construction of a dataset with clearly defined attribute sets for each. This ground truth could include things like "is it alive?", "is it manmade?", "can it fit in a room?". By doing this, we  have a deterministic way to check the yes/no responses from the model. The pipeline for evaluation would be setup in a way that simulates multiple games for each object using the pre-generated question sequences, varying the order in which they are asked. From this we can monitor the following metrics:
+
+Alignment with ground truth (accuracy) - the yes/no response from the model should mirror that of the dataset.
+
+Consistency - answers must not contradict earlier ones.
+
+Any overall evaluation score should also flag hallucinations, responses that are not in the correct format or ones that reveal the object prematurely. Given the current setup, incorrect AI responses result in retries so the number of these must be recorded and factored in.
+
+----
+
+Evaluating the LLM as Player 2 (guesser):
+One of the object in the dataset should be hidden and then the model should be setup with the existing prompt to try guess it within 20 yes/no questions. Metrics for this must focus on efficiency and validity:
+
+Number of questions required to reach a correct guess.
+
+Rate of invalid questions (not yes/no, ambiguous, contradicts prior Q/A).
+
+Overall win Rate.
+
+Rate of redundant questions early on (too similar to earlier ones, but maybe useful for final refinement).
+
+Level of entropy reduction/path in the search space of candidate objects.
+
+When trying to benchmark performance it is important to include random question baselines as well as hand-crafted heuristic based ones. Whilst a model that predicts an object in a lower average number of guesses is typically better, a high percentage of premature (before q20) false detections should be penalised heavily as a model that consistently takes 10 questions to guess is more useful than one that takes 6 but is also very likely to get it wrong.
+
+----
+
+Infrastructure for training models:
+
+To make the evaluation infrastructure scalable it would be useful to implement a procedure that runs many games on a variety of models, logging the following for each so that they can be compared:
+
+Full chat history.
+
+The hidden object and its attributes.
+
+Flags for contradictions, illegal questions or early guesses.
+
+Statistics (entropy reduction/search space path, distances like with word2vec).
+
+----
+
+Expected emergent behaviour:
+Once a model has been trained to optimise performance on these games it could exhibit these behaviours:
+
+It may learn to ask maximally discriminative questions to traverse the candidate object space efficiently before refining (similar to existing information theory strategies).
+
+May shortcut by guessing questions the answerer has picked regularly or recently.
+
+The answerer may give overly helpful hints and leak information besides just yes/no.
+
+The model may start organising its set of objects in a more structured way than the initial dataset.
+
+The answerer may exhibit adversarial strategies by answering questions in a way that is technically correct but minimise clarity.
+
+----
+
+Encouraging desirable behaviour:
+
+Reward the guesser for valid answers that follow the yes/no format.
+
+Reward the guesser for avoiding redundant questions unless its for a final refinement at the end of a path that maximises entropy reduction.
+
+Use self play and evaluate periodically to avoid overfitting.
+
+Introduce some adversarial play to help the model handle difficult or ambiguous strategies.
+
+Randomise objects so that memorisations isn't introducing too much bias and being exploited.
+
+----
+
+Prevent undesirable behaviour:
+
+One undesirable behaviour that was caught early on was the model trying to interject hidden guesses such as "does it have a large seed (like an avocado specifically)?" so these were defended against. Here are ways to discourage similar behaviour:
+
+Enforce strict output constraints (only "yes", "no" or a preset of clarifications).
+
+Penalise clear contradicts or revealing the object.
+
+Penalise the guesser for guessing early unless the probability is very high.
+
+Use rule based filters to validate questions before the reach the guesser.
+
+Slightly change object attributes to avoid reliance on memorised patters (bigger than 4cm vs 5cm)
