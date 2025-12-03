@@ -1,66 +1,84 @@
-============================================================
-TWENTY QUESTIONS FOR ARTIFICIAL LABS
-============================================================
+# Twenty Questions Artificial Labs Submission
 
-This is my submission for the "Twenty Questions" game using an LLM, as part of my application as an AI intern.
+This repository contains my implementation of a **Twenty Questions** game powered by an **LLM**, built as part of the Artificial Labs internship application.
+
 It includes:
 
-    Task 1: Human vs LLM
-    Task 2: LLM vs LLM
-    Final Combined App with 3 playable modes
+* **Task 1:** Human vs LLM
+* **Task 2:** LLM vs LLM
+* **Final Combined App:** Three fully playable modes
 
-The LLM used is the one provided via the provided OpenAI-compatible API proxy.
+The project uses the **OpenAI-compatible API proxy** provided for the challenge.
 
-============================================================
- 1. SETUP INSTRUCTIONS
-============================================================
+---
 
-This project is designed to run inside a virtual environment.
+## 🚀 1. Setup Instructions
 
-Create and activate the virtual environment:
+This project is designed to run in a Python virtual environment.
 
-Linux / macOS:
-    python3 -m venv venv
-    source venv/bin/activate
+### 1.1 Create & Activate Virtual Environment
 
-Windows (PowerShell):
-    python -m venv venv
-    venv\Scripts\activate
+**Linux / macOS**
 
-Install required dependencies:
+```bash
+python3 -m venv venv
+source venv/bin/activate
+```
 
-    pip install -r requirements.txt
+**Windows (PowerShell)**
 
-Add your API key:
+```bash
+python -m venv venv
+venv\Scripts\activate
+```
 
-You MUST set the environment variable:
+### 1.2 Install Dependencies
 
-    CANDIDATE_API_KEY
+```bash
+pip install -r requirements.txt
+```
 
-Create a file named .env in the project root:
+### 1.3 Add Your API Key
 
-    CANDIDATE_API_KEY=your_api_key_here
+The app requires an environment variable:
 
-============================================================
- 4. RUNNING THE GAMES
-============================================================
+```
+CANDIDATE_API_KEY
+```
 
+Create a `.env` file in the repository root:
 
-Run the Final Combined App (recommended):
+```
+CANDIDATE_API_KEY=your_api_key_here
+```
 
-    python app/app_cli.py
+---
 
-You will see this menu:
+## 🎮 2. Running the Games
 
-    1. Human vs LLM
-    2. LLM vs Human
-    3. LLM vs LLM
-    4. Quit
+### 2.1 Run the Full Combined App (Recommended)
 
-Task 1 Only (Human vs LLM):
+```bash
+python app/app_cli.py
+```
 
-    python task1/task1_human_vs_llm.py
+You’ll see this menu:
 
- 4.3 Run Task 2 Only (LLM vs LLM):
+```
+1. Human vs LLM
+2. LLM vs Human
+3. LLM vs LLM
+4. Quit
+```
 
-    python task2/task2_llm_vs_llm.py
+### 2.2 Run Task 1 Only — Human vs LLM
+
+```bash
+python task1/task1_human_vs_llm.py
+```
+
+### 2.3 Run Task 2 Only — LLM vs LLM
+
+```bash
+python task2/task2_llm_vs_llm.py
+```
